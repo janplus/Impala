@@ -326,6 +326,50 @@ void* ExprContext::GetValue(Expr* e, const TupleRow* row) {
   }
 }
 
+void* ExprContext::GetMinMaxValue(Expr* e, const TupleRow* row) {
+  switch (e->type_.type) {
+    case TYPE_TINYINT: {
+      impala_udf::MinMaxTinyIntVal v = e->GetMinMaxTinyIntVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_tinyint_val = v.val;
+      return &result_.minmax_tinyint_val;
+    }
+    case TYPE_SMALLINT: {
+      impala_udf::MinMaxSmallIntVal v = e->GetMinMaxSmallIntVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_smallint_val = v.val;
+      return &result_.minmax_smallint_val;
+    }
+    case TYPE_INT: {
+      impala_udf::MinMaxIntVal v = e->GetMinMaxIntVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_int_val = v.val;
+      return &result_.minmax_int_val;
+    }
+    case TYPE_BIGINT: {
+      impala_udf::MinMaxBigIntVal v = e->GetMinMaxBigIntVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_bigint_val = v.val;
+      return &result_.minmax_bigint_val;
+    }
+    case TYPE_FLOAT: {
+      impala_udf::MinMaxFloatVal v = e->GetMinMaxFloatVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_float_val = v.val;
+      return &result_.minmax_float_val;
+    }
+    case TYPE_DOUBLE: {
+      impala_udf::MinMaxDoubleVal v = e->GetMinMaxDoubleVal(this, row);
+      if (v.is_null) return NULL;
+      result_.minmax_double_val = v.val;
+      return &result_.minmax_double_val;
+    }
+    default: {
+      return NULL;
+    }
+  }
+}
+
 void ExprContext::PrintValue(const TupleRow* row, string* str) {
   RawValue::PrintValue(GetValue(row), root_->type(), root_->output_scale_, str);
 }
@@ -337,6 +381,10 @@ void ExprContext::PrintValue(void* value, stringstream* stream) {
 }
 void ExprContext::PrintValue(const TupleRow* row, stringstream* stream) {
   RawValue::PrintValue(GetValue(row), root_->type(), root_->output_scale_, stream);
+}
+
+BooleanVal ExprContext::StatisticsJudge(TupleRow* row) {
+  return root_->StatisticsJudge(this, row);
 }
 
 BooleanVal ExprContext::GetBooleanVal(TupleRow* row) {

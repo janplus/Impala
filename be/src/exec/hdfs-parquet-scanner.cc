@@ -27,6 +27,7 @@
 #include "exec/scanner-context.inline.h"
 #include "exec/read-write-util.h"
 #include "exprs/expr.h"
+#include "exprs/expr-context.h"
 #include "gutil/bits.h"
 #include "runtime/collection-value-builder.h"
 #include "runtime/descriptors.h"
@@ -1870,6 +1871,42 @@ int HdfsParquetScanner::CountScalarColumns(const vector<ColumnReader*>& column_r
   return num_columns;
 }
 
+void HdfsParquetScanner::CreateTupleRow(int row_group_idx, TupleRow* row) {
+  Tuple* min_tuple = scan_node_->InitEmptyTemplateTuple(*scan_node_->tuple_desc());
+  Tuple* max_tuple = scan_node_->InitEmptyTemplateTuple(*scan_node_->tuple_desc());
+  row->SetTuple(0, min_tuple);
+  row->SetTuple(1, max_tuple);
+  for (int i = 0; i < column_readers_.size(); ++i) {
+    BaseScalarColumnReader* scalar_reader =
+        static_cast<BaseScalarColumnReader*>(column_readers_[i]);
+    const parquet::Statistics& statistics =
+        file_metadata_.row_groups[row_group_idx].columns[scalar_reader->col_idx()].meta_data.statistics;
+    SlotDescriptor* slot_desc = scan_node_->materialized_slots()[i];
+    if (!statistics.__isset.min || !statistics.__isset.max) {
+      min_tuple->SetNull(slot_desc->null_indicator_offset());
+      max_tuple->SetNull(slot_desc->null_indicator_offset());
+    }
+    void* min_dst = min_tuple->GetSlot(slot_desc->tuple_offset());
+    void* max_dst = max_tuple->GetSlot(slot_desc->tuple_offset());
+    switch(slot_desc->type().type) {
+      case TYPE_TINYINT:
+      case TYPE_SMALLINT:
+      case TYPE_INT:
+      case TYPE_BIGINT:
+      case TYPE_FLOAT:
+      case TYPE_DOUBLE: {
+        RawValue::Write(statistics.min.c_str(), min_dst, slot_desc->type(), NULL);
+        RawValue::Write(statistics.max.c_str(), max_dst, slot_desc->type(), NULL);
+        break;
+      }
+      default:
+        min_tuple->SetNull(slot_desc->null_indicator_offset());
+        max_tuple->SetNull(slot_desc->null_indicator_offset());
+        break;
+    }
+  }
+}
+
 Status HdfsParquetScanner::ProcessSplit() {
   DCHECK(parse_status_.ok()) << "Invalid parse_status_" << parse_status_.GetDetail();
   // First process the file metadata in the footer
@@ -1914,6 +1951,13 @@ Status HdfsParquetScanner::ProcessSplit() {
     CommitRows(0);
 
     RETURN_IF_ERROR(InitColumns(i, column_readers_));
+
+    // IMPALA-2328 Parquet scan should use min/max statistics to skip blocks based on predicate
+    TupleRow* row = new TupleRow();
+    CreateTupleRow(i, row);
+    if (!StatisticsEvalConjuncts(row)) {
+        continue;
+    }
 
     assemble_rows_timer_.Start();
 

@@ -43,6 +43,12 @@ AnyVal* CreateAnyVal(const ColumnType& type) {
       return new StringVal;
     case TYPE_TIMESTAMP: return new TimestampVal;
     case TYPE_DECIMAL: return new DecimalVal;
+    case TYPE_MINMAX_TINYINT: return new MinMaxTinyIntVal;
+    case TYPE_MINMAX_SMALLINT: return new MinMaxSmallIntVal;
+    case TYPE_MINMAX_INT: return new MinMaxIntVal;
+    case TYPE_MINMAX_BIGINT: return new MinMaxBigIntVal;
+    case TYPE_MINMAX_FLOAT: return new MinMaxFloatVal;
+    case TYPE_MINMAX_DOUBLE: return new MinMaxDoubleVal;
     default:
       DCHECK(false) << "Unsupported type: " << type;
       return NULL;

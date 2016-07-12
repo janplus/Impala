@@ -20,6 +20,7 @@
 #include "runtime/string-value.h"
 #include "runtime/timestamp-value.h"
 #include "util/decimal-util.h"
+#include "runtime/minmax-value.h"
 
 namespace impala {
 
@@ -38,6 +39,12 @@ struct ExprValue {
   Decimal8Value decimal8_val;
   Decimal16Value decimal16_val;
   CollectionValue collection_val;
+  impala_udf::MinMaxVal<int8_t> minmax_tinyint_val;
+  impala_udf::MinMaxVal<int16_t> minmax_smallint_val;
+  impala_udf::MinMaxVal<int32_t> minmax_int_val;
+  impala_udf::MinMaxVal<int64_t> minmax_bigint_val;
+  impala_udf::MinMaxVal<float> minmax_float_val;
+  impala_udf::MinMaxVal<double> minmax_double_val;
 
   ExprValue()
     : bool_val(false),
@@ -52,7 +59,13 @@ struct ExprValue {
       decimal4_val(),
       decimal8_val(),
       decimal16_val(),
-      collection_val() {
+      collection_val(),
+      minmax_tinyint_val(),
+      minmax_smallint_val(),
+      minmax_int_val(),
+      minmax_bigint_val(),
+      minmax_float_val(),
+      minmax_double_val() {
   }
 
   ExprValue(bool v) : bool_val(v) {}

@@ -48,6 +48,14 @@ enum PrimitiveType {
   TYPE_BINARY,      // Not implemented
   TYPE_DECIMAL,
 
+  /// These are for statistics judgment.
+  TYPE_MINMAX_TINYINT,
+  TYPE_MINMAX_SMALLINT,
+  TYPE_MINMAX_INT,
+  TYPE_MINMAX_BIGINT,
+  TYPE_MINMAX_FLOAT,
+  TYPE_MINMAX_DOUBLE,
+
   /// This is minimally supported currently. It can't be returned to the user or
   /// parsed from scan nodes. It can be returned from exprs and must be consumable
   /// by exprs.
@@ -248,6 +256,7 @@ struct ColumnType {
   apache::hive::service::cli::thrift::TTypeEntry ToHs2Type() const;
   std::string DebugString() const;
 
+  std::string ValString() const;
  private:
   /// Used to create a possibly nested type from the flattened Thrift representation.
   ///

@@ -287,6 +287,14 @@ class HdfsScanner {
     if (commit_batch) CommitRows(0);
   }
 
+  /// Convenience function for statitics evaluating conjuncts using this scanner's ExprContexts.
+  /// This must always be inlined so we can correctly replace the call to
+  /// ExecNode::StaticsEvalConjuncts() during codegen.
+  bool IR_ALWAYS_INLINE StatisticsEvalConjuncts(TupleRow* row) {
+    return ExecNode::StatisticsEvalConjuncts(&(*scanner_conjunct_ctxs_)[0],
+                                             scanner_conjunct_ctxs_->size(), row);
+  }
+
   /// Convenience function for evaluating conjuncts using this scanner's ExprContexts.
   /// This must always be inlined so we can correctly replace the call to
   /// ExecNode::EvalConjuncts() during codegen.

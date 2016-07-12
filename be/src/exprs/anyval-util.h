@@ -276,6 +276,24 @@ class AnyValUtil {
           default:
             break;
         }
+      case TYPE_MINMAX_TINYINT:
+        reinterpret_cast<MinMaxTinyIntVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<int8_t>*>(slot);
+        return;
+      case TYPE_MINMAX_SMALLINT:
+        reinterpret_cast<MinMaxSmallIntVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<int16_t>*>(slot);
+        return;
+      case TYPE_MINMAX_INT:
+        reinterpret_cast<MinMaxIntVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<int32_t>*>(slot);
+        return;
+      case TYPE_MINMAX_BIGINT:
+        reinterpret_cast<MinMaxBigIntVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<int64_t>*>(slot);
+        return;
+      case TYPE_MINMAX_FLOAT:
+        reinterpret_cast<MinMaxFloatVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<float>*>(slot);
+        return;
+      case TYPE_MINMAX_DOUBLE:
+        reinterpret_cast<MinMaxDoubleVal*>(dst)->val = *reinterpret_cast<const MinMaxVal<double>*>(slot);
+        return;
       default:
         DCHECK(false) << "NYI: " << type;
     }

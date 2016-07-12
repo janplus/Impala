@@ -437,6 +437,18 @@ Status ExecNode::ExecDebugAction(TExecNodePhase::type phase, RuntimeState* state
   return Status::OK();
 }
 
+bool ExecNode::StatisticsEvalConjuncts(ExprContext* const* ctxs, int num_ctxs, TupleRow* row) {
+  for (int i = 0; i < num_ctxs; ++i) {
+    BooleanVal v = ctxs[i]->StatisticsJudge(row);
+    if (v.is_null) {
+      return true;
+    } else if (!v.val) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool ExecNode::EvalConjuncts(ExprContext* const* ctxs, int num_ctxs, TupleRow* row) {
   for (int i = 0; i < num_ctxs; ++i) {
     BooleanVal v = ctxs[i]->GetBooleanVal(row);

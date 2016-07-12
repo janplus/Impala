@@ -268,8 +268,226 @@ class Operators {
   static BooleanVal Le_Char_Char(FunctionContext*, const StringVal&, const StringVal&);
   static BooleanVal Le_TimestampVal_TimestampVal(
       FunctionContext*, const TimestampVal&, const TimestampVal&);
+
+  static BooleanVal Eq_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Eq_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Eq_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Eq_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Eq_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Eq_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+  static BooleanVal Ne_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Ne_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Ne_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Ne_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Ne_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Ne_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+  static BooleanVal Gt_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Gt_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Gt_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Gt_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Gt_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Gt_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+  static BooleanVal Lt_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Lt_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Lt_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Lt_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Lt_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Lt_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+  static BooleanVal Ge_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Ge_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Ge_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Ge_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Ge_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Ge_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+  static BooleanVal Le_MinMaxTinyIntVal_TinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const TinyIntVal&);
+  static BooleanVal Le_MinMaxSmallIntVal_SmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const SmallIntVal&);
+  static BooleanVal Le_MinMaxIntVal_IntVal(
+      FunctionContext*, const MinMaxIntVal&, const IntVal&);
+  static BooleanVal Le_MinMaxBigIntVal_BigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const BigIntVal&);
+  static BooleanVal Le_MinMaxFloatVal_FloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const FloatVal&);
+  static BooleanVal Le_MinMaxDoubleVal_DoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const DoubleVal&);
+
+  static BooleanVal Eq_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Eq_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Eq_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Eq_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Eq_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Eq_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Ne_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Ne_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Ne_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Ne_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Ne_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Ne_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Gt_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Gt_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Gt_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Gt_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Gt_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Gt_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Lt_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Lt_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Lt_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Lt_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Lt_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Lt_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Ge_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Ge_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Ge_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Ge_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Ge_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Ge_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Le_TinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const TinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Le_SmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const SmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Le_IntVal_MinMaxIntVal(
+      FunctionContext*, const IntVal&, const MinMaxIntVal&);
+  static BooleanVal Le_BigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const BigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Le_FloatVal_MinMaxFloatVal(
+      FunctionContext*, const FloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Le_DoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const DoubleVal&, const MinMaxDoubleVal&);
+
+  static BooleanVal Eq_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Eq_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Eq_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Eq_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Eq_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Eq_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Ne_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Ne_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Ne_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Ne_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Ne_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Ne_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Gt_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Gt_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Gt_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Gt_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Gt_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Gt_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Lt_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Lt_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Lt_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Lt_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Lt_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Lt_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Ge_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Ge_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Ge_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Ge_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Ge_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Ge_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
+  static BooleanVal Le_MinMaxTinyIntVal_MinMaxTinyIntVal(
+      FunctionContext*, const MinMaxTinyIntVal&, const MinMaxTinyIntVal&);
+  static BooleanVal Le_MinMaxSmallIntVal_MinMaxSmallIntVal(
+      FunctionContext*, const MinMaxSmallIntVal&, const MinMaxSmallIntVal&);
+  static BooleanVal Le_MinMaxIntVal_MinMaxIntVal(
+      FunctionContext*, const MinMaxIntVal&, const MinMaxIntVal&);
+  static BooleanVal Le_MinMaxBigIntVal_MinMaxBigIntVal(
+      FunctionContext*, const MinMaxBigIntVal&, const MinMaxBigIntVal&);
+  static BooleanVal Le_MinMaxFloatVal_MinMaxFloatVal(
+      FunctionContext*, const MinMaxFloatVal&, const MinMaxFloatVal&);
+  static BooleanVal Le_MinMaxDoubleVal_MinMaxDoubleVal(
+      FunctionContext*, const MinMaxDoubleVal&, const MinMaxDoubleVal&);
 };
 
 } // namespace impala
 #endif
-

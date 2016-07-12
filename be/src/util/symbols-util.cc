@@ -149,6 +149,24 @@ static void AppendAnyValType(int namespace_id, const ColumnType& type, stringstr
     case TYPE_DECIMAL:
       AppendMangledToken("DecimalVal", s);
       break;
+    case TYPE_MINMAX_TINYINT:
+      AppendMangledToken("MinMaxTinyIntVal", s);
+      break;
+    case TYPE_MINMAX_SMALLINT:
+      AppendMangledToken("MinMaxSmallIntVal", s);
+      break;
+    case TYPE_MINMAX_INT:
+      AppendMangledToken("MinMaxIntVal", s);
+      break;
+    case TYPE_MINMAX_BIGINT:
+      AppendMangledToken("MinMaxBigIntVal", s);
+      break;
+    case TYPE_MINMAX_FLOAT:
+      AppendMangledToken("MinMaxFloatVal", s);
+      break;
+    case TYPE_MINMAX_DOUBLE:
+      AppendMangledToken("MinMaxDoubleVal", s);
+      break;
     default:
       DCHECK(false) << "NYI: " << type.DebugString();
   }

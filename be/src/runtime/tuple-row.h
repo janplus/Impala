@@ -72,7 +72,7 @@ class TupleRow {
   static const char* LLVM_CLASS_NAME;
 
  private:
-  Tuple* tuples_[1];
+  Tuple* tuples_[2];
 };
 
 }

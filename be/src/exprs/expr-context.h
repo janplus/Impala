@@ -22,6 +22,8 @@
 #include "udf/udf.h"
 #include "udf/udf-internal.h" // for CollectionVal
 
+#include "exprs/slot-ref.h" // for StatisticsJudge
+
 using namespace impala_udf;
 
 namespace impala {
@@ -110,6 +112,9 @@ class ExprContext {
   Expr* root() { return root_; }
   bool closed() { return closed_; }
 
+  /// Call StatisticsJudge on root_
+  BooleanVal StatisticsJudge(TupleRow* row);
+
   /// Calls Get*Val on root_
   BooleanVal GetBooleanVal(TupleRow* row);
   TinyIntVal GetTinyIntVal(TupleRow* row);
@@ -136,6 +141,8 @@ class ExprContext {
   static void FreeLocalAllocations(const std::vector<FunctionContext*>& ctxs);
 
   static const char* LLVM_CLASS_NAME;
+
+  int GetSlotOffset() { return (reinterpret_cast<SlotRef*>(root_))->GetOffset(); }
 
  private:
   friend class Expr;
@@ -173,6 +180,10 @@ class ExprContext {
   /// Calls the appropriate Get*Val() function on 'e' and stores the result in result_.
   /// This is used by Exprs to call GetValue() on a child expr, rather than root_.
   void* GetValue(Expr* e, const TupleRow* row);
+
+  /// Calls the appropriate GetMinMax*Val() function on 'e' and stores the result in result_.
+  /// This is used by Exprs to call GetMinMaxValue() on a child expr, rather than root_.
+  void* GetMinMaxValue(Expr *e, const TupleRow* row);
 };
 
 }

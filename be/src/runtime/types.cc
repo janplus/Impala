@@ -151,8 +151,8 @@ string TypeToString(PrimitiveType t) {
     case TYPE_STRUCT: return "STRUCT";
     case TYPE_ARRAY: return "ARRAY";
     case TYPE_MAP: return "MAP";
+    default: return "";
   };
-  return "";
 }
 
 string TypeToOdbcString(PrimitiveType t) {
@@ -178,8 +178,8 @@ string TypeToOdbcString(PrimitiveType t) {
     case TYPE_STRUCT: return "struct";
     case TYPE_ARRAY: return "array";
     case TYPE_MAP: return "map";
+    default: return "unknown";
   };
-  return "unknown";
 }
 
 void ColumnType::ToThrift(TColumnType* thrift_type) const {
@@ -304,6 +304,27 @@ string ColumnType::DebugString() const {
       return ss.str();
     default:
       return TypeToString(type);
+  }
+}
+
+string ColumnType::ValString() const {
+  switch (type) {
+    case TYPE_BOOLEAN: return "BooleanVal";
+    case TYPE_TINYINT: return "TinyIntVal";
+    case TYPE_SMALLINT: return "SmallIntVal";
+    case TYPE_INT: return "IntVal";
+    case TYPE_BIGINT: return "BigIntVal";
+    case TYPE_FLOAT: return "FloatVal";
+    case TYPE_DOUBLE: return "DoubleVal";
+    case TYPE_TIMESTAMP: return "TimeStampVal";
+    case TYPE_STRING: return "StringVal";
+    case TYPE_MINMAX_TINYINT: return "MinMaxTinyIntVal";
+    case TYPE_MINMAX_SMALLINT: return "MinMaxSmallIntVal";
+    case TYPE_MINMAX_INT: return "MinMaxIntVal";
+    case TYPE_MINMAX_BIGINT: return "MinMaxBigIntVal";
+    case TYPE_MINMAX_FLOAT: return "MinMaxFloatVal";
+    case TYPE_MINMAX_DOUBLE: return "MinMaxDoubleVal";
+    default: return "";
   }
 }
 

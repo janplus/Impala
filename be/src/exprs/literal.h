@@ -54,6 +54,8 @@ class Literal: public Expr {
   virtual impala_udf::StringVal GetStringVal(ExprContext*, const TupleRow*);
   virtual impala_udf::DecimalVal GetDecimalVal(ExprContext*, const TupleRow*);
 
+  virtual bool is_literal() const { return true; }
+
  protected:
   friend class Expr;
 

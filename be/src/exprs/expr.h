@@ -142,6 +142,13 @@ class Expr {
   virtual TimestampVal GetTimestampVal(ExprContext* context, const TupleRow*);
   virtual DecimalVal GetDecimalVal(ExprContext* context, const TupleRow*);
 
+  virtual MinMaxTinyIntVal GetMinMaxTinyIntVal(ExprContext* context, const TupleRow* row) { return MinMaxTinyIntVal::null(); }
+  virtual MinMaxSmallIntVal GetMinMaxSmallIntVal(ExprContext* context, const TupleRow* row) { return MinMaxSmallIntVal::null(); }
+  virtual MinMaxIntVal GetMinMaxIntVal(ExprContext* context, const TupleRow* row) { return MinMaxIntVal::null(); }
+  virtual MinMaxBigIntVal GetMinMaxBigIntVal(ExprContext* context, const TupleRow* row) { return MinMaxBigIntVal::null(); }
+  virtual MinMaxFloatVal GetMinMaxFloatVal(ExprContext* context, const TupleRow* row) { return MinMaxFloatVal::null(); }
+  virtual MinMaxDoubleVal GetMinMaxDoubleVal(ExprContext* context, const TupleRow* row) { return MinMaxDoubleVal::null(); }
+
   /// Get the number of digits after the decimal that should be displayed for this value.
   /// Returns -1 if no scale has been specified (currently the scale is only set for
   /// doubles set by RoundUpTo). GetValue() must have already been called.
@@ -154,6 +161,11 @@ class Expr {
 
   const ColumnType& type() const { return type_; }
   bool is_slotref() const { return is_slotref_; }
+
+  /// Function to check where the expression is literal.
+  virtual bool is_literal() const { return false; }
+  /// Function to proceed judgment on statistics.
+  virtual BooleanVal StatisticsJudge(ExprContext* context, const TupleRow* row) { return BooleanVal::null();}
 
   const std::vector<Expr*>& children() const { return children_; }
 

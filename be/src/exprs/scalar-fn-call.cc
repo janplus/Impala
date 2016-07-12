@@ -24,9 +24,9 @@
 #include "exprs/anyval-util.h"
 #include "exprs/expr-context.h"
 #include "runtime/hdfs-fs-cache.h"
-#include "runtime/lib-cache.h"
 #include "runtime/runtime-state.h"
 #include "runtime/types.h"
+#include "service/fe-support-common.h" // For statistics judge
 #include "udf/udf-internal.h"
 #include "util/debug-util.h"
 #include "util/dynamic-util.h"
@@ -526,6 +526,119 @@ Status ScalarFnCall::GetFunction(RuntimeState* state, const string& symbol, void
     return Status::OK();
   }
 }
+
+bool StatisticsJudgeArgs::SetFunctionName(const string& function_name) {
+  if (function_name == "eq") {
+    function_name_ = "Eq";
+  } else if (function_name == "ne") {
+    function_name_ = "Ne";
+  } else if (function_name == "gt") {
+    function_name_ = "Gt";
+  } else if (function_name == "ge") {
+    function_name_ = "Ge";
+  } else if (function_name == "lt") {
+    function_name_ = "Lt";
+  } else if (function_name == "le") {
+    function_name_ = "Le";
+  } else {
+    return false;
+  }
+  return true;
+}
+
+bool StatisticsJudgeArgs::GetScalarFnPtr(const TFunction& fn, LibCacheEntry* cache_entry) {
+  TSymbolLookupParams params;
+  TSymbolLookupResult result;
+  params.symbol = GetSymbol();
+  ResolveSymbolLookup(params, arg_types_, &result);
+  if (result.result_code != TSymbolLookupResultCode::SYMBOL_FOUND) {
+    return false;
+  }
+  Status status = LibCache::instance()->GetSoFunctionPtr(fn.hdfs_location, result.symbol, &scalar_fn_, &cache_entry);
+  if (!status.ok()) {
+    return false;
+  }
+  return true;
+}
+
+string StatisticsJudgeArgs::GetSymbol() {
+  stringstream ss;
+  ss << "impala::Operators::" << function_name_;
+  for (int i = 0; i < arg_types_.size(); ++i) {
+    ss << "_" << arg_types_[i].ValString();
+  }
+  return ss.str();
+}
+
+bool ScalarFnCall::StatisticsEvaluateChildren(ExprContext* context, const TupleRow* row,
+                                              StatisticsJudgeArgs* stat_args) {
+  ColumnType arg_type;
+  for (int i = 0; i < children_.size(); ++i) {
+    void* src_slot;
+    AnyVal* dst_val;
+    if (children_[i]->is_slotref()) {
+      switch (children_[i]->type().type) {
+        case TYPE_TINYINT: {
+          arg_type.type = TYPE_MINMAX_TINYINT;
+          break;
+        }
+        case TYPE_SMALLINT: {
+          arg_type.type = TYPE_MINMAX_SMALLINT;
+          break;
+        }
+        case TYPE_INT: {
+          arg_type.type = TYPE_MINMAX_INT;
+          break;
+        }
+        case TYPE_BIGINT: {
+          arg_type.type = TYPE_MINMAX_BIGINT;
+          break;
+        }
+        case TYPE_FLOAT: {
+          arg_type.type = TYPE_MINMAX_FLOAT;
+          break;
+        }
+        case TYPE_DOUBLE: {
+          arg_type.type = TYPE_MINMAX_DOUBLE;
+          break;
+        }
+        default: {
+          return false;
+        }
+      }
+      src_slot = context->GetMinMaxValue(children_[i], row);
+      dst_val = CreateAnyVal(arg_type);
+      AnyValUtil::SetAnyVal(src_slot, arg_type, dst_val);
+      if (dst_val->is_null) return false;
+      stat_args->arg_types_.push_back(arg_type);
+    } else if (children_[i]->is_literal()) {
+      src_slot = context->GetValue(children_[i], row);
+      dst_val = CreateAnyVal(children_[i]->type());
+      AnyValUtil::SetAnyVal(src_slot, children_[i]->type(), dst_val);
+      stat_args->arg_types_.push_back(children_[i]->type());
+    } else {
+      return false;
+    }
+    stat_args->input_vals_.push_back(dst_val);
+  }
+  return true;
+}
+
+BooleanVal ScalarFnCall::StatisticsJudge(ExprContext* context, const TupleRow* row) {
+  FunctionContext* fn_ctx = context->fn_context(fn_context_index_);
+  if (children_.size() != 2) return BooleanVal::null();
+
+  StatisticsJudgeArgs stat_args;
+  if (!stat_args.SetFunctionName(fn_.name.function_name)) return BooleanVal::null();
+  if (!StatisticsEvaluateChildren(context, row, &stat_args)) return BooleanVal::null();
+
+  if (!stat_args.GetScalarFnPtr(fn_, cache_entry_)) return BooleanVal::null();
+  typedef BooleanVal (*ScalarFn2)(FunctionContext*, const AnyVal& a1,
+                                  const AnyVal& a2);
+  return reinterpret_cast<ScalarFn2>(stat_args.scalar_fn_)(
+      fn_ctx, *stat_args.input_vals_[0], *stat_args.input_vals_[1]);
+}
+
 
 void ScalarFnCall::EvaluateChildren(ExprContext* context, const TupleRow* row,
                                     vector<AnyVal*>* input_vals) {

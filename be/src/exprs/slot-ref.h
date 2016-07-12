@@ -54,6 +54,15 @@ class SlotRef : public Expr {
   virtual impala_udf::DecimalVal GetDecimalVal(ExprContext* context, const TupleRow*);
   virtual impala_udf::CollectionVal GetCollectionVal(ExprContext* context, const TupleRow*);
 
+  virtual impala_udf::MinMaxTinyIntVal GetMinMaxTinyIntVal(ExprContext* context, const TupleRow*);
+  virtual impala_udf::MinMaxSmallIntVal GetMinMaxSmallIntVal(ExprContext* context, const TupleRow*);
+  virtual impala_udf::MinMaxIntVal GetMinMaxIntVal(ExprContext* context, const TupleRow*);
+  virtual impala_udf::MinMaxBigIntVal GetMinMaxBigIntVal(ExprContext* context, const TupleRow*);
+  virtual impala_udf::MinMaxFloatVal GetMinMaxFloatVal(ExprContext* context, const TupleRow*);
+  virtual impala_udf::MinMaxDoubleVal GetMinMaxDoubleVal(ExprContext* context, const TupleRow*);
+
+  int GetOffset() const { return slot_offset_; }
+
  protected:
   int tuple_idx_;  // within row
   int slot_offset_;  // within tuple

@@ -19,6 +19,7 @@
 #include <string>
 
 #include "exprs/expr.h"
+#include "runtime/lib-cache.h"
 #include "udf/udf.h"
 
 using namespace impala_udf;
@@ -26,6 +27,7 @@ using namespace impala_udf;
 namespace impala {
 
 class TExprNode;
+class StatisticsJudgeArgs;
 
 /// Expr for evaluating a pre-compiled native or LLVM IR function that uses the UDF
 /// interface (i.e. a scalar function). This class overrides GetCodegendComputeFn() to
@@ -48,6 +50,8 @@ class TExprNode;
 class ScalarFnCall: public Expr {
  public:
   virtual std::string DebugString() const;
+
+  virtual BooleanVal StatisticsJudge(ExprContext* context, const TupleRow* row);
 
  protected:
   friend class Expr;
@@ -119,6 +123,29 @@ class ScalarFnCall: public Expr {
   /// Function to call scalar_fn_. Used in the interpreted path.
   template<typename RETURN_TYPE>
   RETURN_TYPE InterpretEval(ExprContext* context, const TupleRow* row);
+
+  bool StatisticsEvaluateChildren(ExprContext* context, const TupleRow* row,
+                                  StatisticsJudgeArgs* stat_args);
+};
+
+class StatisticsJudgeArgs {
+public:
+  std::vector<AnyVal*> input_vals_;
+  std::vector<ColumnType> arg_types_;
+  std::string function_name_;
+  void* scalar_fn_;
+
+  StatisticsJudgeArgs():scalar_fn_(NULL) {}
+  ~StatisticsJudgeArgs() {
+    for (int i = 0; i < input_vals_.size(); ++i) {
+      if (input_vals_[i] != NULL) delete input_vals_[i];
+    }
+  }
+
+  bool SetFunctionName(const string& function_name);
+  bool GetScalarFnPtr(const TFunction& fn, LibCacheEntry* cache_entry);
+ private:
+  std::string GetSymbol();
 };
 
 }

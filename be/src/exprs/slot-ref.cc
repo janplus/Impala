@@ -469,4 +469,70 @@ CollectionVal SlotRef::GetCollectionVal(ExprContext* context, const TupleRow* ro
   return CollectionVal(coll_value->ptr, coll_value->num_tuples);
 }
 
+MinMaxTinyIntVal SlotRef::GetMinMaxTinyIntVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_TINYINT);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxTinyIntVal::null();
+  return MinMaxTinyIntVal(*reinterpret_cast<int8_t*>(min_t->GetSlot(slot_offset_)),
+                          *reinterpret_cast<int8_t*>(max_t->GetSlot(slot_offset_)));
+}
+
+MinMaxSmallIntVal SlotRef::GetMinMaxSmallIntVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_SMALLINT);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxSmallIntVal::null();
+  return MinMaxSmallIntVal(*reinterpret_cast<int16_t*>(min_t->GetSlot(slot_offset_)),
+                           *reinterpret_cast<int16_t*>(max_t->GetSlot(slot_offset_)));
+}
+
+MinMaxIntVal SlotRef::GetMinMaxIntVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_INT);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxIntVal::null();
+  return MinMaxIntVal(*reinterpret_cast<int32_t*>(min_t->GetSlot(slot_offset_)),
+                      *reinterpret_cast<int32_t*>(max_t->GetSlot(slot_offset_)));
+}
+
+MinMaxBigIntVal SlotRef::GetMinMaxBigIntVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_BIGINT);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxBigIntVal::null();
+  return MinMaxBigIntVal(*reinterpret_cast<int64_t*>(min_t->GetSlot(slot_offset_)),
+                         *reinterpret_cast<int64_t*>(max_t->GetSlot(slot_offset_)));
+}
+
+MinMaxFloatVal SlotRef::GetMinMaxFloatVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_FLOAT);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxFloatVal::null();
+  return MinMaxFloatVal(*reinterpret_cast<float*>(min_t->GetSlot(slot_offset_)),
+                        *reinterpret_cast<float*>(max_t->GetSlot(slot_offset_)));
+}
+
+MinMaxDoubleVal SlotRef::GetMinMaxDoubleVal(ExprContext* context, const TupleRow* row) {
+  DCHECK_EQ(type_.type, TYPE_DOUBLE);
+  Tuple* min_t = row->GetTuple(0);
+  Tuple* max_t = row->GetTuple(1);
+  if (min_t == NULL || max_t == NULL ||
+      min_t->IsNull(null_indicator_offset_) || max_t->IsNull(null_indicator_offset_))
+    return MinMaxDoubleVal::null();
+  return MinMaxDoubleVal(*reinterpret_cast<double*>(min_t->GetSlot(slot_offset_)),
+                         *reinterpret_cast<double*>(max_t->GetSlot(slot_offset_)));
+}
+
 }

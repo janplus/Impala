@@ -309,6 +309,8 @@ class HdfsParquetScanner : public HdfsScanner {
   virtual Status Prepare(ScannerContext* context);
   virtual void Close();
   virtual Status ProcessSplit();
+  /// For min max StatisticsEvalConjuncts
+  virtual void CreateTupleRow(int row_group_idx, TupleRow* row);
 
   /// Issue just the footer range for each file.  We'll then parse the footer and pick
   /// out the columns we want.

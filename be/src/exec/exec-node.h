@@ -135,6 +135,10 @@ class ExecNode {
   /// Collect all scan node types.
   void CollectScanNodes(std::vector<ExecNode*>* nodes);
 
+  /// Evaluate ExprContexts over statistics. Return true if all exprs return true
+  /// or if there is any expr not supported.
+  static bool StatisticsEvalConjuncts(ExprContext* const* ctxs, int num_ctxs, TupleRow* row);
+
   /// Evaluate ExprContexts over row.  Returns true if all exprs return true.
   /// TODO: This doesn't use the vector<Expr*> signature because I haven't figured
   /// out how to deal with declaring a templated std:vector type in IR

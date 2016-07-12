@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <boost/cstdint.hpp>
 #include <string.h>
+#include <runtime/minmax-value.h>
 
 /// This is the only Impala header required to develop UDFs and UDAs. This header
 /// contains the types that need to be used and the FunctionContext object. The context
@@ -40,6 +41,13 @@ struct IntVal;
 struct BigIntVal;
 struct StringVal;
 struct TimestampVal;
+
+struct MinMaxTinyIntVal;
+struct MinMaxSmallIntVal;
+struct MinMaxIntVal;
+struct MinMaxBigIntVal;
+struct MinMaxFloatVal;
+struct MinMaxDoubleVal;
 
 /// A FunctionContext is passed to every UDF/UDA and is the interface for the UDF to the
 /// rest of the system. It contains APIs to examine the system state, report errors and
@@ -643,6 +651,120 @@ struct DecimalVal : public impala_udf::AnyVal {
   DecimalVal(const DecimalVal& other) {
     *this = other;
   }
+};
+
+struct MinMaxTinyIntVal : public AnyVal {
+  MinMaxVal<int8_t> val;
+
+  MinMaxTinyIntVal(int8_t min = 0, int8_t max = 0): val(min, max) {}
+
+  static MinMaxTinyIntVal null() {
+    MinMaxTinyIntVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxTinyIntVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxTinyIntVal &other) const { return !(*this == other); }
+};
+
+struct MinMaxSmallIntVal : public AnyVal {
+  MinMaxVal<int16_t> val;
+
+  MinMaxSmallIntVal(int16_t min = 0, int16_t max = 0): val(min, max) {}
+
+  static MinMaxSmallIntVal null() {
+    MinMaxSmallIntVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxSmallIntVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxSmallIntVal &other) const { return !(*this == other); }
+};
+
+struct MinMaxIntVal : public AnyVal {
+  MinMaxVal<int32_t> val;
+
+  MinMaxIntVal(int32_t min = 0, int32_t max = 0): val(min, max) {}
+
+  static MinMaxIntVal null() {
+    MinMaxIntVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxIntVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxIntVal &other) const { return !(*this == other); }
+};
+
+struct MinMaxBigIntVal : public AnyVal {
+  MinMaxVal<int64_t> val;
+
+  MinMaxBigIntVal(int64_t min = 0, int64_t max = 0): val(min, max) {}
+
+  static MinMaxBigIntVal null() {
+    MinMaxBigIntVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxBigIntVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxBigIntVal &other) const { return !(*this == other); }
+};
+
+struct MinMaxFloatVal : public AnyVal {
+  MinMaxVal<float> val;
+
+  MinMaxFloatVal(float min = 0, float max = 0): val(min, max) {}
+
+  static MinMaxFloatVal null() {
+    MinMaxFloatVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxFloatVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxFloatVal &other) const { return !(*this == other); }
+};
+
+struct MinMaxDoubleVal : public AnyVal {
+  MinMaxVal<double> val;
+
+  MinMaxDoubleVal(double min = 0, double max = 0): val(min, max) {}
+
+  static MinMaxDoubleVal null() {
+    MinMaxDoubleVal result;
+    result.is_null = true;
+    return result;
+  }
+
+  bool operator==(const MinMaxDoubleVal &other) const {
+    if (is_null && other.is_null) return true;
+    if (is_null || other.is_null) return false;
+    return (val.min == other.val.min && val.max == other.val.max);
+  }
+  bool operator!=(const MinMaxDoubleVal &other) const { return !(*this == other); }
 };
 
 typedef uint8_t* BufferVal;
